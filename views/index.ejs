@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html ng-app="ttApp">
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/materialize.min.css">
+  <link rel='stylesheet' href='/css/style.css' />
+  <link href="/css/select2.min.css" rel="stylesheet">
+  <link href="/css/slick.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/css/selectize.css" />
+
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/materialize.min.js"></script>
+  <script src="/js/select2.min.js"></script>
+  <script type="text/javascript" src="/js/selectize.js"></script>
+  <script src='/js/slots.js'></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+
+</head>
+<body ng-controller="ttController">
+  <h2><%= title %></h2>
+  <div class="row" style="width: 100%;margin-bottom:0px;">
+
+    <div class="col s6 m6 l6" style="margin-top:52px;">
+      <input type="button" value="prev" ng-click="prev()">
+      {{curr}}/{{tts_length}}
+      <input type="button" value="next" ng-click="next()">
+      <form ng-submit="goto(gotoTt)" style="display:inline;"><input type="text" ng-model="gotoTt" style="width:65px;"> <input type="submit" value="goto"></form>
+
+      GAP : {{gap}}
+      <form ng-submit="gapFilter(maxGap)" style="display:inline;"><input type="text" ng-model="maxGap" style="width:65px;"> <input type="submit" value="set max GAP"></form>
+    </div>
+    <div class="col s4 m4 l4">
+      <select id="coursesInput" placeholder="Select your courses">
+        <option ng-repeat="c in allCourses" ng-value="c">{{c}}</option>
+      </select>
+    </div>
+
+    <div class="col s2 m2 l2">
+      <button ng-click="generateNewTT()" style="margin-top:10px" class="btn waves-effect waves-light red" type="submit">GENERATE<i class="material-icons right"></i></button>
+    </div>
+  </div>
+  <div class="row timetable" style="width: 100%;margin-top:-20px">
+    <table>
+      <tbody><tr class="timetable-headings">
+        <td class="timetable-header">Time</td>
+        <td class="timetable-timing" style="padding: 1.8%">8:00-8:50</td>
+        <td class="timetable-timing" style="padding: 1.8%">9:00-9:50</td>
+        <td class="timetable-timing">10:00-10:50</td>
+        <td class="timetable-timing" style="padding: 1.8%">11:00-11:50</td>
+        <td class="timetable-timing">12:00-12:50</td>
+        <td class="timetable-timing" style="padding: 1.8%">1:00-1:30</td>
+        <td class="timetable-timing" style="padding: 0%;color: rgb(254,254,254);font-weight: bold" rowspan="6"><p style="transform: rotate(270deg);">LUNCH</p></td>
+        <td class="timetable-timing">14:00-14:50</td>
+        <td class="timetable-timing">15:00-15:50</td>
+        <td class="timetable-timing">16:00-16:50</td>
+        <td class="timetable-timing">17:00-17:50</td>
+        <td class="timetable-timing">18:00-18:50</td>
+        <td class="timetable-timing">19:00-19:30</td>
+      </tr>
+      <%
+      function coll(i){
+        //return "{true:'selected',false:'unselected',null:'unselected'}[slots["+i+"]]";
+        return "{selected : slots["+(i)+"]!='' , unselected : slots["+(i)+"]==''}"
+      }
+      %>
+      <tr class="monday">
+        <td class="timetable-header">Monday</td>
+        <td class="a1 l1" ng-class="<%= coll(1) %>">A1/L1 {{slots[1]}}</td>
+        <td class="f1 l2" ng-class="<%= coll(2) %>">F1/L2 {{slots[2]}}</td>
+        <td class="d1 l3" ng-class="<%= coll(3) %>">D1/L3 {{slots[3]}}</td>
+        <td class="tb1 l4" ng-class="<%= coll(4) %>">TB1/L4 {{slots[4]}}</td>
+        <td class="tg1 l5" ng-class="<%= coll(5) %>">TG1/L5 {{slots[5]}}</td>
+        <td class="l6" ng-class="<%= coll(6) %>">L6 {{slots[6]}}</td>
+        <td class="a2 l31" ng-class="<%= coll(31) %>">A2/L31 {{slots[31]}}</td>
+        <td class="f2 l32" ng-class="<%= coll(32) %>">F2/L32 {{slots[32]}}</td>
+        <td class="d2 l33" ng-class="<%= coll(33) %>">D2/L33 {{slots[33]}}</td>
+        <td class="tb2 l34" ng-class="<%= coll(34) %>">TB2/L34 {{slots[34]}}</td>
+        <td class="tg2 l35" ng-class="<%= coll(35) %>">TG2/L35 {{slots[35]}}</td>
+        <td class="l36" ng-class="<%= coll(36) %>">L36 {{slots[36]}}</td>
+      </tr>
+      <tr class="tuesday">
+        <td class="timetable-header">Tuesday</td>
+        <td class="b1 l7 " ng-class="<%= coll(7) %>">B1/L7 {{slots[7]}}</td>
+        <td class="g1 l8 " ng-class="<%= coll(8) %>">G1/L8 {{slots[8]}}</td>
+        <td class="e1 l9 " ng-class="<%= coll(9) %>">E1/L9 {{slots[9]}}</td>
+        <td class="tc1 l10 " ng-class="<%= coll(10) %>">TC1/L10 {{slots[10]}}</td>
+        <td class="taa1 l11 " ng-class="<%= coll(11) %>">TAA1/L11 {{slots[11]}}</td>
+        <td class="l12 " ng-class="<%= coll(12) %>">L12 {{slots[12]}}</td>
+        <td class="b2 l37 " ng-class="<%= coll(37) %>">B2/L37 {{slots[37]}}</td>
+        <td class="g2 l38 " ng-class="<%= coll(38) %>">G2/L38 {{slots[38]}}</td>
+        <td class="e2 l39 " ng-class="<%= coll(39) %>">E2/L39 {{slots[39]}}</td>
+        <td class="tc2 l40 " ng-class="<%= coll(40) %>">TC2/L40 {{slots[40]}}</td>
+        <td class="taa2 l41 " ng-class="<%= coll(41) %>">TAA2/L41 {{slots[41]}}</td>
+        <td class="l42 " ng-class="<%= coll(42) %>">L42 {{slots[42]}}</td>
+      </tr>
+      <tr class="wednesday">
+        <td class="timetable-header">Wednesday</td>
+        <td class="c1 l13 " ng-class="<%= coll(13) %>">C1/L13 {{slots[13]}}</td>
+        <td class="a1 l14 " ng-class="<%= coll(14) %>">A1/L14 {{slots[14]}}</td>
+        <td class="f1 " ng-class="<%= coll(15) %>">F1/L15 {{slots[15]}}</td>
+        <td class="timetable-seminar" colspan="3">Extramural Hour</td>
+        <td class="c2 l43 " ng-class="<%= coll(43) %>">C2/L43 {{slots[43]}}</td>
+        <td class="a2 l44 " ng-class="<%= coll(44) %>">A2/L44 {{slots[44]}}</td>
+        <td class="f2 l45 " ng-class="<%= coll(45) %>">F2/L45 {{slots[45]}}</td>
+        <td class="td2 l46 " ng-class="<%= coll(46) %>">TD2/L46 {{slots[46]}}</td>
+        <td class="tbb2 l47 " ng-class="<%= coll(47) %>">TBB2/L47 {{slots[47]}}</td>
+        <td class="l48 " ng-class="<%= coll(48) %>">L48 {{slots[48]}}</td>
+      </tr>
+      <tr class="thursday">
+        <td class="timetable-header">Thursday</td>
+        <td class="d1 l19 " ng-class="<%= coll(19) %>">D1/L19 {{slots[19]}}</td>
+        <td class="b1 l20 " ng-class="<%= coll(20) %>">B1/L20 {{slots[20]}}</td>
+        <td class="g1 l21 " ng-class="<%= coll(21) %>">G1/L21 {{slots[21]}}</td>
+        <td class="te1 l22 " ng-class="<%= coll(22) %>">TE1/L22 {{slots[22]}}</td>
+        <td class="tcc1 l23 " ng-class="<%= coll(23) %>">TCC1/L23 {{slots[23]}}</td>
+        <td class="l24 " ng-class="<%= coll(24) %>">L24 {{slots[24]}}</td>
+        <td class="d2 l49 " ng-class="<%= coll(49) %>">D2/L49 {{slots[49]}}</td>
+        <td class="b2 l50 " ng-class="<%= coll(50) %>">B2/L50 {{slots[50]}}</td>
+        <td class="g2 l51 " ng-class="<%= coll(51) %>">G2/L51 {{slots[51]}}</td>
+        <td class="te2 l52 " ng-class="<%= coll(52) %>">TE2/L52 {{slots[52]}}</td>
+        <td class="tcc2 l53 " ng-class="<%= coll(53) %>">TCC2/L53 {{slots[53]}}</td>
+        <td class="l54 " ng-class="<%= coll(54) %>">L54 {{slots[54]}}</td>
+      </tr>
+      <tr class="friday">
+        <td class="timetable-header">Friday</td>
+        <td class="e1 l25 " ng-class="<%= coll(25) %>">E1/L25 {{slots[25]}}</td>
+        <td class="c1 l26 " ng-class="<%= coll(26) %>">C1/L26 {{slots[26]}}</td>
+        <td class="ta1 l27 " ng-class="<%= coll(27) %>">TA1/L27 {{slots[27]}}</td>
+        <td class="tf1 l28 " ng-class="<%= coll(28) %>">TF1/L28 {{slots[28]}}</td>
+        <td class="td1 l29 " ng-class="<%= coll(29) %>">TD1/L29 {{slots[29]}}</td>
+        <td class="l30 " ng-class="<%= coll(30) %>">L30 {{slots[30]}}</td>
+        <td class="e2 l55 " ng-class="<%= coll(55) %>">E2/L55 {{slots[55]}}</td>
+        <td class="c2 l56 " ng-class="<%= coll(56) %>">C2/L56 {{slots[56]}}</td>
+        <td class="ta2 l57 " ng-class="<%= coll(57) %>">TA2/L57 {{slots[57]}}</td>
+        <td class="tf2 l58 " ng-class="<%= coll(58) %>">TF2/L58 {{slots[58]}}</td>
+        <td class="tdd2 l59 " ng-class="<%= coll(59) %>">TDD2/L59 {{slots[59]}}</td>
+        <td class="l60 " ng-class="<%= coll(60) %>">L60 {{slots[60]}}</td>
+      </tr>
+    </tbody></table>
+  </div>
+  <div class="row">
+    <textarea style="width:100%;">{{course}}</textarea>
+  </div>
+  <div class="row">
+    <textarea style="width:100%;">{{slots}}</textarea>
+  </div>
+
+  <div id="loadingModal" class="modal">
+      <div class="modal-content">
+        <h4>Generating Time Tables ... Please wait</h4>
+        <div class="progress">
+            <div id="progress" class="determinate" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+  <script src="/js/tt.js"></script>
+  <script>
+
+  var progBar = $("#progress");
+function setProgress(val){
+  //console.log(val);
+  progBar.css("width",val+"%");
+}
+  function initSelectize(){
+    var select = $('#coursesInput').selectize({
+      maxItems: null,
+      valueField: 'courses',
+      labelField: 'courses',
+      searchField: 'courses',
+      create: true
+    });
+    var selectize = select[0].selectize;
+    courses.forEach(function(dto){
+      selectize.createItem(dto);
+    });
+
+      selectize.setValue(courses);
+  }
+
+  setTimeout(initSelectize,2000);
+  angular.module('ttApp', []).controller('ttController', function($scope) {
+    var tts = ttSlots;
+    var courses = timeTables;
+    $scope.allCourses = Object.keys(slotsOrig);
+    //initSelectize();
+    $scope.next = function(){
+      if($scope.curr==$scope.tts_length)return;
+      $scope.curr++;
+      $scope.slots = tts[filter[$scope.curr-1]];
+      $scope.course = courses[filter[$scope.curr-1]];
+      $scope.gap = gaps[filter[$scope.curr-1]];
+    }
+
+    $scope.prev = function(){
+      if($scope.curr==1)return;
+      $scope.curr--;
+      $scope.slots = tts[filter[$scope.curr-1]];
+      $scope.course = courses[filter[$scope.curr-1]];
+      $scope.gap = gaps[filter[$scope.curr-1]];
+    }
+    $scope.goto = function(gotoTt){
+      var n = parseInt(gotoTt);
+      if(n>0 && n<=$scope.tts_length){
+        $scope.curr = n;
+        $scope.slots = tts[filter[$scope.curr-1]];
+        $scope.course = courses[filter[$scope.curr-1]];
+        $scope.gap = gaps[filter[$scope.curr-1]];
+      }
+    }
+    $scope.gapFilter = function(gap){
+      var l = gaps.length;
+      filter = [];
+      var c = 0;
+      for(var i=0;i<l;i++){
+        if(gaps[i]<=gap){
+          filter[c++] = i;
+        }
+      }
+      $scope.tts_length = filter.length;
+      $scope.curr = 1;
+      $scope.slots = tts[filter[$scope.curr-1]];
+      $scope.course = courses[filter[$scope.curr-1]];
+      $scope.gap = gaps[filter[$scope.curr-1]];
+    }
+
+    $scope.generateNewTT = function(){
+      $("#loadingModal").openModal();
+      setProgress(0);
+      setTimeout(function(){
+        courses = $('#coursesInput').val();
+          generate(courses,function(){
+            tts = ttSlots;
+            courses = timeTables;
+            $scope.gapFilter(100);
+            $scope.$apply();
+              $("#loadingModal").closeModal();
+          });
+      },1000);
+    }
+
+    //$scope.gapFilter(100);
+  });
+  </script>
+</body>
+</html>
